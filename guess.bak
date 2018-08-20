@@ -1,5 +1,5 @@
 #lang racket
-(require rnrs/arithmetic/bitwise-6) ; bitwise-arithmetic-shift
+(require rnrs/arithmetic/bitwise-6)
 
 (define *small* 1)
 (define *big* 100)
