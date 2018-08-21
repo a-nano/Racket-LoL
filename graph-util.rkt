@@ -2,6 +2,8 @@
 (require srfi/1   ; pair-for-each
          srfi/13) ; string-map string-take
 
+(provide ugraph->png) ; for wumpus.rkt
+
 (define *wizard-nodes* '((living-room
                           (you are in the living-room.
                                a wizard is snoring loudly on the couch.))
@@ -25,13 +27,13 @@
 (define *max-label-length* 30)
 
 (define (dot-label exp)
-  (if exp
+  (if (null? exp)
+      ""
       (let ([s (call-with-output-string
                 (lambda (out) (write exp out)))])
         (if (> (string-length s) *max-label-length*)
             (string-append (string-take s (- *max-label-length* 3)) "...")
-            s))
-      ""))
+            s))))
 
 (define (nodes->dot nodes)
   (for-each (lambda (node)
@@ -77,7 +79,7 @@
 (define (uedges->dot edges)
   (pair-for-each (lambda (lst)
                    (for-each (lambda (edge)
-                               (unless (assoc (car edge) (cdr lst))
+                               (unless (assv (car edge) (cdr lst))
                                  (newline)
                                  (display (dot-name (caar lst)))
                                  (display "--")
